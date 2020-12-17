@@ -1,27 +1,48 @@
 import React from 'react';
-import { DatePicker, Space } from 'antd';
-import { Card } from 'antd';
-import './App.scss';
+//importacion de funciones de react-router-dom
+import {BrowserRouter as Router ,Route, Switch } from 'react-router-dom';
+//importacion del sistema de rutas 
+import routes from './config/routes';
+import AdminHome from './pages/Admin';
+
+
+import "./App.scss";
+
+
+
 
 function App() {
 
-const test = (date , dateString)=> {
-console.log (date);
-console.log(" ");
-console.log(dateString)
-}
 
   return (
-    <div className="app">
-      <h1> Web Personal - Client </h1>
-      <h2>Proyecto</h2>
-      <DatePicker onChange = {test} />
-      <Card title="test ...." extra={<a href="#">More</a>} style={{ width: 350 }}>
-      <p>Hola mundo</p>
-      
-    </Card>
-    </div>
+    <Router>
+      <Switch>
+       
+       {routes.map((route,index ) => (  // recorremos routes con la funcion RouteWithSubRoutes
+         < RouteWithSubRoutes key= {index} {...route}/> 
+        ) )}
+      </Switch>
+    </Router>
+
   );
 }
+// funcion para renderizar ruta padre y 
+// pasarle las rutas hijas al componente 
+// esta funcion es un componente 
+
+function RouteWithSubRoutes(route){ // recibe ruta y subrutas y renderiza un componente 
+
+
+
+  return (
+    <Route
+    path = {route.path}
+    exact = {route.exact}
+    //le pasamos al Layout(route.component) el componente mas las rutas hijas 
+    render = {props => <route.component routes = {route.routes} {...props}/>}
+    />
+  );
+}
+
 
 export default App;
